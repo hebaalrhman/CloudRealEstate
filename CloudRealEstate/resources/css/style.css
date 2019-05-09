@@ -1,0 +1,53 @@
+.home-icon16{
+	background:transparent url(../images/house.png) center 0 no-repeat !important;	
+}
+.clients-icon16{
+	background:transparent url(../images/user_green.png) center 0 no-repeat !important;	
+}
+.invoices-icon16{
+	background:transparent url(../images/table_money.png) center 0 no-repeat !important;	
+}
+.categories-icon16{
+	background:transparent url(../images/application_view_icons.png) center 0 no-repeat !important;	
+}
+.save-icon16{
+	background:transparent url(../images/disk16.png) center 0 no-repeat !important;	
+}
+.new-icon16{
+	background:transparent url(../images/page_add16.png) center 0 no-repeat !important;	
+}
+.delete-icon16{
+	background:transparent url(../images/delete16.png) center 0 no-repeat !important;	
+}
+.booking-icon16{
+	background:transparent url(../images/bookingicon.png) center 0 no-repeat !important;
+}
+.home-hotel6{
+	background:transparent url(../images/hotelIcon.png)  left 0 no-repeat !important;
+}
+.home-pax6{
+	background:transparent url(../images/clientsIcon.png)  left 0 no-repeat !important;
+}
+.home-room6{
+	background:transparent url(../images/roomIcon.png)  left 0 no-repeat !important;
+}
+
+.home-calc{
+	background:transparent url(../images/calculatorIcon.png)  left 0 no-repeat !important;
+}
+.home-meal{
+	background:transparent url(../images/mealIcon.png)  left 0 no-repeat !important;
+}
+.Msg-pop{
+	background:transparent url(../images/deleteMsgfoldedIcon.png)  left 0 no-repeat !important;
+}
+.my-label-style {
+	font-weight: bold;
+	font-family: "Berlin Sans FB Demi";
+	font-style: italic;
+	font-size: 14px;
+	color: #c0272b;
+	white-space: normal;
+	text-align:center;
+	height: auto
+}

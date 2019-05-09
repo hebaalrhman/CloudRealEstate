@@ -1,0 +1,1186 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Cloud_RealEstateModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Online_Groups">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Online_Menu">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="text" Type="nvarchar" MaxLength="50" />
+          <Property Name="iconCls" Type="nvarchar" MaxLength="15" />
+          <Property Name="parent_id" Type="int" />
+          <Property Name="className" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Online_Permissions">
+          <Key>
+            <PropertyRef Name="Menu_id" />
+            <PropertyRef Name="Group_id" />
+          </Key>
+          <Property Name="Menu_id" Type="int" Nullable="false" />
+          <Property Name="Group_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Online_User">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="Group_id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="100" />
+          <Property Name="userName" Type="nvarchar" MaxLength="20" />
+          <Property Name="password" Type="nvarchar" MaxLength="100" />
+          <Property Name="email" Type="nvarchar" MaxLength="100" />
+          <Property Name="picture" Type="nvarchar" MaxLength="100" />
+          <Property Name="Group_id" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Online_Permissions_Online_Groups">
+          <End Role="Online_Groups" Type="Self.Online_Groups" Multiplicity="1" />
+          <End Role="Online_Permissions" Type="Self.Online_Permissions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Online_Groups">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Online_Permissions">
+              <PropertyRef Name="Group_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Online_Permissions_Online_Menu">
+          <End Role="Online_Menu" Type="Self.Online_Menu" Multiplicity="1" />
+          <End Role="Online_Permissions" Type="Self.Online_Permissions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Online_Menu">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Online_Permissions">
+              <PropertyRef Name="Menu_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Online_User_Online_Groups">
+          <End Role="Online_Groups" Type="Self.Online_Groups" Multiplicity="1" />
+          <End Role="Online_User" Type="Self.Online_User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Online_Groups">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Online_User">
+              <PropertyRef Name="Group_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="fn_CityMain_select" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Region_Id" Type="int" Mode="In" />
+          <Parameter Name="Company_Id" Type="int" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="City_Id" Type="int" Nullable="false" />
+                <Property Name="Company_Id" Type="int" Nullable="false" />
+                <Property Name="CityName" Type="nvarchar" MaxLength="50" Nullable="false" />
+                <Property Name="CityCode" Type="nvarchar" MaxLength="10" Nullable="false" />
+                <Property Name="CityName_Name_Online" Type="nvarchar" MaxLength="100" Nullable="false" />
+                <Property Name="Latitude" Type="nvarchar" MaxLength="50" Nullable="false" />
+                <Property Name="Region_Id" Type="int" Nullable="false" />
+                <Property Name="Longitude" Type="nvarchar" MaxLength="50" Nullable="false" />
+                <Property Name="Active" Type="bit" />
+                <Property Name="User_Id" Type="int" />
+                <Property Name="DateEntry" Type="datetime" />
+                <Property Name="Computer_Name" Type="nvarchar" MaxLength="50" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="fn_CountryMain_Select" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="CountryCode" Type="nvarchar" MaxLength="20" Nullable="false" />
+                <Property Name="CountryName" Type="nvarchar" MaxLength="100" />
+                <Property Name="latitude" Type="varchar" MaxLength="100" />
+                <Property Name="longitude" Type="varchar" MaxLength="100" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="fn_Region_select" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Country_Code" Type="nvarchar" Mode="In" />
+          <Parameter Name="Company_Id" Type="int" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="Region_Id" Type="int" Nullable="false" />
+                <Property Name="Company_Id" Type="int" Nullable="false" />
+                <Property Name="Country_Code" Type="nvarchar" MaxLength="10" />
+                <Property Name="Region_Code" Type="nvarchar" MaxLength="20" Nullable="false" />
+                <Property Name="Region_Name" Type="nvarchar" MaxLength="50" />
+                <Property Name="comments" Type="nvarchar" MaxLength="250" Nullable="false" />
+                <Property Name="Longitude" Type="nvarchar" MaxLength="50" Nullable="false" />
+                <Property Name="Latitude" Type="nvarchar" MaxLength="50" Nullable="false" />
+                <Property Name="Region_Properties" Type="nvarchar" MaxLength="100" Nullable="false" />
+                <Property Name="Active" Type="bit" Nullable="false" />
+                <Property Name="User_Id" Type="int" />
+                <Property Name="Last_Modified" Type="datetime" />
+                <Property Name="Date_Entry" Type="datetime" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="fn_tbl_Owner_CompanyProject_Select" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Company_Id" Type="int" Mode="In" />
+          <Parameter Name="Active" Type="int" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="OCompany_IdPj" Type="int" Nullable="false" />
+                <Property Name="Company_Id" Type="int" Nullable="false" />
+                <Property Name="OCompanyCode" Type="nvarchar" MaxLength="20" />
+                <Property Name="OCompanyName" Type="nvarchar" MaxLength="100" />
+                <Property Name="OCompanyWeb" Type="nvarchar" MaxLength="150" />
+                <Property Name="OCompanyEmail" Type="nvarchar" MaxLength="100" />
+                <Property Name="OCompanyTel" Type="nvarchar" MaxLength="100" />
+                <Property Name="OCompanyMobile" Type="nvarchar" MaxLength="100" />
+                <Property Name="OCompanyAddress" Type="nvarchar" MaxLength="200" />
+                <Property Name="GLAccountNo" Type="nvarchar" MaxLength="30" />
+                <Property Name="Active" Type="bit" />
+                <Property Name="User_Id" Type="int" Nullable="false" />
+                <Property Name="Entry_Date" Type="datetime" />
+                <Property Name="Computer_name" Type="nvarchar" MaxLength="50" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="fn_tbl_Project_Gallery_Select" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Project_Id" Type="int" Mode="In" />
+          <Parameter Name="Company_Id" Type="int" Mode="In" />
+          <Parameter Name="Relation_Id" Type="int" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="Pj_Gallery_Id" Type="int" Nullable="false" />
+                <Property Name="Project_Id" Type="int" Nullable="false" />
+                <Property Name="Company_Id" Type="int" Nullable="false" />
+                <Property Name="Pj_img_Code" Type="nvarchar" MaxLength="50" />
+                <Property Name="Pj_img_path" Type="nvarchar(max)" />
+                <Property Name="Relation_Id" Type="int" Nullable="false" />
+                <Property Name="alt_Image" Type="nvarchar" MaxLength="50" />
+                <Property Name="Description_Image" Type="nvarchar(max)" />
+                <Property Name="User_Id" Type="int" Nullable="false" />
+                <Property Name="Entry_Date" Type="datetime" />
+                <Property Name="Computer_name" Type="nvarchar" MaxLength="50" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="fn_tbl_Project_Main_Select" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Company_Id" Type="int" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="Project_Id" Type="int" Nullable="false" />
+                <Property Name="Company_Id" Type="int" Nullable="false" />
+                <Property Name="Project_Code" Type="nvarchar" MaxLength="20" />
+                <Property Name="Project_Name" Type="nvarchar" MaxLength="100" />
+                <Property Name="Address" Type="nvarchar" MaxLength="200" />
+                <Property Name="CountryCode" Type="nvarchar" MaxLength="20" />
+                <Property Name="City_id" Type="int" />
+                <Property Name="Region_Id" Type="int" />
+                <Property Name="Zone_Id" Type="int" />
+                <Property Name="OCompany_IdPj" Type="int" Nullable="false" />
+                <Property Name="Project_TypeId" Type="int" Nullable="false" />
+                <Property Name="Description" Type="nvarchar(max)" />
+                <Property Name="location_lat_long" Type="nvarchar" MaxLength="100" />
+                <Property Name="lat" Type="nvarchar" MaxLength="50" />
+                <Property Name="long" Type="nvarchar" MaxLength="50" />
+                <Property Name="Active" Type="bit" />
+                <Property Name="User_Id" Type="int" Nullable="false" />
+                <Property Name="Entry_Date" Type="datetime" />
+                <Property Name="Computer_name" Type="nvarchar" MaxLength="50" />
+                <Property Name="CityCode" Type="nvarchar" MaxLength="10" Nullable="false" />
+                <Property Name="CityName" Type="nvarchar" MaxLength="50" Nullable="false" />
+                <Property Name="Region_Code" Type="nvarchar" MaxLength="20" Nullable="false" />
+                <Property Name="Region_Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+                <Property Name="Zone_Code" Type="nvarchar" MaxLength="20" Nullable="false" />
+                <Property Name="Zone_Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+                <Property Name="OCompanyCode" Type="nvarchar" MaxLength="20" Nullable="false" />
+                <Property Name="OCompanyName" Type="nvarchar" MaxLength="100" Nullable="false" />
+                <Property Name="Project_TypeCode" Type="nvarchar" MaxLength="20" Nullable="false" />
+                <Property Name="Project_TypeName" Type="nvarchar" MaxLength="100" Nullable="false" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="fn_tbl_Project_Sub_Select" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Company_Id" Type="int" Mode="In" />
+          <Parameter Name="Project_Id" Type="int" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="Project_IdSub" Type="numeric" Precision="30" Scale="0" Nullable="false" />
+                <Property Name="Project_Id" Type="int" Nullable="false" />
+                <Property Name="Company_Id" Type="int" Nullable="false" />
+                <Property Name="Project_Type_OptionId" Type="int" Nullable="false" />
+                <Property Name="TotalUnitUsed" Type="int" />
+                <Property Name="ApplyManage" Type="bit" />
+                <Property Name="Notes" Type="nvarchar" MaxLength="200" />
+                <Property Name="User_Id" Type="int" Nullable="false" />
+                <Property Name="Entry_Date" Type="datetime" />
+                <Property Name="Computer_name" Type="nvarchar" MaxLength="50" />
+                <Property Name="ProjectOption_Code" Type="nvarchar" MaxLength="50" />
+                <Property Name="ProjectOption_Name" Type="nvarchar" MaxLength="100" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="fn_tbl_Project_Type" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="Project_TypeId" Type="int" Nullable="false" />
+                <Property Name="Project_TypeCode" Type="nvarchar" MaxLength="20" />
+                <Property Name="Project_TypeName" Type="nvarchar" MaxLength="100" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="fn_tbl_Project_Type_Option_Select" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Company_Id" Type="int" Mode="In" />
+          <Parameter Name="Project_TypeId" Type="int" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="Project_Type_OptionId" Type="int" Nullable="false" />
+                <Property Name="Project_TypeId" Type="int" Nullable="false" />
+                <Property Name="Company_Id" Type="int" Nullable="false" />
+                <Property Name="Project_TypeCode" Type="nvarchar" MaxLength="20" />
+                <Property Name="Project_TypeName" Type="nvarchar" MaxLength="100" />
+                <Property Name="ProjectOption_Code" Type="nvarchar" MaxLength="50" />
+                <Property Name="ProjectOption_Name" Type="nvarchar" MaxLength="100" />
+                <Property Name="ProjectOption_Description" Type="nvarchar(max)" />
+                <Property Name="Active" Type="bit" />
+                <Property Name="User_Id" Type="int" Nullable="false" />
+                <Property Name="Entry_Date" Type="datetime" />
+                <Property Name="Computer_name" Type="nvarchar" MaxLength="50" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="fn_tbl_ProjectBuilding_Select" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Company_Id" Type="int" Mode="In" />
+          <Parameter Name="Project_Id" Type="int" Mode="In" />
+          <Parameter Name="Active" Type="int" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="Pj_BuildingId" Type="int" Nullable="false" />
+                <Property Name="Company_Id" Type="int" Nullable="false" />
+                <Property Name="Project_Id" Type="int" Nullable="false" />
+                <Property Name="tbl_buildCatId" Type="int" />
+                <Property Name="TypeBuildingId" Type="int" Nullable="false" />
+                <Property Name="Project_IdSub" Type="numeric" Precision="30" Scale="0" Nullable="false" />
+                <Property Name="BuildingCode" Type="nvarchar" MaxLength="20" />
+                <Property Name="BuildingName" Type="nvarchar" MaxLength="100" />
+                <Property Name="FloorNo" Type="int" />
+                <Property Name="Active" Type="bit" />
+                <Property Name="User_Id" Type="int" Nullable="false" />
+                <Property Name="Entry_Date" Type="datetime" />
+                <Property Name="Computer_name" Type="nvarchar" MaxLength="50" />
+                <Property Name="BuildCatName" Type="nvarchar" MaxLength="100" />
+                <Property Name="BuildingTypeName" Type="nvarchar" MaxLength="100" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="fn_tbl_TypeBuilding_Select" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="tbl_buildCatId" Type="int" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="TypeBuildingId" Type="int" Nullable="false" />
+                <Property Name="tbl_buildCatId" Type="int" />
+                <Property Name="BuildingTypeName" Type="nvarchar" MaxLength="100" />
+                <Property Name="BuildingTypeDescription" Type="nvarchar(max)" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="fn_tbl_TypeBuildingCategorySelect" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="tbl_buildCatId" Type="int" Nullable="false" />
+                <Property Name="BuildCatName" Type="nvarchar" MaxLength="100" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_tbl_Owner_CompanyProject_InsertUpdateDelete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="OCompany_IdPj" Type="int" Mode="In" />
+          <Parameter Name="Company_Id" Type="int" Mode="In" />
+          <Parameter Name="OCompanyCode" Type="nvarchar" Mode="In" />
+          <Parameter Name="OCompanyName" Type="nvarchar" Mode="In" />
+          <Parameter Name="OCompanyWeb" Type="nvarchar" Mode="In" />
+          <Parameter Name="OCompanyEmail" Type="nvarchar" Mode="In" />
+          <Parameter Name="OCompanyTel" Type="nvarchar" Mode="In" />
+          <Parameter Name="OCompanyMobile" Type="nvarchar" Mode="In" />
+          <Parameter Name="OCompanyAddress" Type="nvarchar" Mode="In" />
+          <Parameter Name="GLAccountNo" Type="nvarchar" Mode="In" />
+          <Parameter Name="Active" Type="bit" Mode="In" />
+          <Parameter Name="User_Id" Type="int" Mode="In" />
+          <Parameter Name="Computer_name" Type="nvarchar" Mode="In" />
+          <Parameter Name="OCompany_IdPj_out" Type="int" Mode="InOut" />
+          <Parameter Name="Vald" Type="int" Mode="InOut" />
+          <Parameter Name="Error" Type="nvarchar" Mode="InOut" />
+        </Function>
+        <Function Name="sp_tbl_Project_Gallery_InsertUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Pj_Gallery_Id" Type="int" Mode="In" />
+          <Parameter Name="Project_Id" Type="int" Mode="In" />
+          <Parameter Name="Company_Id" Type="int" Mode="In" />
+          <Parameter Name="Pj_img_Code" Type="nvarchar" Mode="In" />
+          <Parameter Name="Pj_img_path" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="Relation_Id" Type="int" Mode="In" />
+          <Parameter Name="alt_Image" Type="nvarchar" Mode="In" />
+          <Parameter Name="Description_Image" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="User_Id" Type="int" Mode="In" />
+          <Parameter Name="Computer_name" Type="nvarchar" Mode="In" />
+          <Parameter Name="Pj_Gallery_Id_out" Type="int" Mode="InOut" />
+          <Parameter Name="Active" Type="int" Mode="In" />
+          <Parameter Name="Vald" Type="int" Mode="InOut" />
+          <Parameter Name="Error" Type="nvarchar" Mode="InOut" />
+        </Function>
+        <Function Name="sp_tbl_Project_Main_InsertUpdateDelete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Project_Id" Type="int" Mode="In" />
+          <Parameter Name="Company_Id" Type="int" Mode="In" />
+          <Parameter Name="Project_Code" Type="nvarchar" Mode="In" />
+          <Parameter Name="Project_Name" Type="nvarchar" Mode="In" />
+          <Parameter Name="Address" Type="nvarchar" Mode="In" />
+          <Parameter Name="Country_Id" Type="nvarchar" Mode="In" />
+          <Parameter Name="City_id" Type="int" Mode="In" />
+          <Parameter Name="Region_Id" Type="int" Mode="In" />
+          <Parameter Name="Zone_Id" Type="int" Mode="In" />
+          <Parameter Name="OCompany_IdPj" Type="int" Mode="In" />
+          <Parameter Name="Project_TypeId" Type="int" Mode="In" />
+          <Parameter Name="Description" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="location_lat_long" Type="nvarchar" Mode="In" />
+          <Parameter Name="lat" Type="nvarchar" Mode="In" />
+          <Parameter Name="long" Type="nvarchar" Mode="In" />
+          <Parameter Name="Active" Type="bit" Mode="In" />
+          <Parameter Name="User_Id" Type="int" Mode="In" />
+          <Parameter Name="Computer_name" Type="nvarchar" Mode="In" />
+          <Parameter Name="Project_IdOut" Type="int" Mode="InOut" />
+          <Parameter Name="Vald" Type="int" Mode="InOut" />
+          <Parameter Name="Error" Type="nvarchar" Mode="InOut" />
+        </Function>
+        <Function Name="sp_tbl_Project_Sub_InsertUpdateDelete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Project_IdSub" Type="numeric" Mode="In" />
+          <Parameter Name="Project_Id" Type="int" Mode="In" />
+          <Parameter Name="Company_Id" Type="int" Mode="In" />
+          <Parameter Name="Project_Type_OptionId" Type="int" Mode="In" />
+          <Parameter Name="TotalUnitUsed" Type="int" Mode="In" />
+          <Parameter Name="ApplyManage" Type="bit" Mode="In" />
+          <Parameter Name="Computer_name" Type="nvarchar" Mode="In" />
+          <Parameter Name="Notes" Type="nvarchar" Mode="In" />
+          <Parameter Name="User_Id" Type="int" Mode="In" />
+          <Parameter Name="Active" Type="bit" Mode="In" />
+          <Parameter Name="Project_IdSub_Out" Type="numeric" Mode="InOut" />
+          <Parameter Name="Vald" Type="int" Mode="InOut" />
+          <Parameter Name="Error" Type="nvarchar" Mode="InOut" />
+        </Function>
+        <Function Name="sp_tbl_ProjectBuilding_InsertUpdateDelete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Pj_BuildingId" Type="int" Mode="In" />
+          <Parameter Name="Company_Id" Type="int" Mode="In" />
+          <Parameter Name="Project_Id" Type="int" Mode="In" />
+          <Parameter Name="tbl_buildCatId" Type="int" Mode="In" />
+          <Parameter Name="TypeBuildingId" Type="int" Mode="In" />
+          <Parameter Name="Project_IdSub" Type="numeric" Mode="In" />
+          <Parameter Name="BuildingCode" Type="nvarchar" Mode="In" />
+          <Parameter Name="BuildingName" Type="nvarchar" Mode="In" />
+          <Parameter Name="FloorNo" Type="int" Mode="In" />
+          <Parameter Name="Active" Type="bit" Mode="In" />
+          <Parameter Name="User_Id" Type="int" Mode="In" />
+          <Parameter Name="Computer_name" Type="nvarchar" Mode="In" />
+          <Parameter Name="Pj_BuildingId_out" Type="int" Mode="InOut" />
+          <Parameter Name="Vald" Type="int" Mode="InOut" />
+          <Parameter Name="Error" Type="nvarchar" Mode="InOut" />
+        </Function>
+        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="spo_tbl_Project_Type_Option_InsertUpdateDelete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Project_Type_OptionId" Type="int" Mode="In" />
+          <Parameter Name="Project_TypeId" Type="int" Mode="In" />
+          <Parameter Name="Company_Id" Type="int" Mode="In" />
+          <Parameter Name="ProjectOption_Code" Type="nvarchar" Mode="In" />
+          <Parameter Name="ProjectOption_Name" Type="nvarchar" Mode="In" />
+          <Parameter Name="ProjectOption_Description" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="Active" Type="bit" Mode="In" />
+          <Parameter Name="User_Id" Type="int" Mode="In" />
+          <Parameter Name="Computer_name" Type="nvarchar" Mode="In" />
+          <Parameter Name="Project_Type_OptionId_out" Type="int" Mode="InOut" />
+          <Parameter Name="Vald" Type="int" Mode="InOut" />
+          <Parameter Name="Error" Type="nvarchar" Mode="InOut" />
+        </Function>
+        <EntityContainer Name="Cloud_RealEstateModelStoreContainer">
+          <EntitySet Name="Online_Groups" EntityType="Self.Online_Groups" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Online_Menu" EntityType="Self.Online_Menu" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Online_Permissions" EntityType="Self.Online_Permissions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Online_User" EntityType="Self.Online_User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Online_Permissions_Online_Groups" Association="Self.FK_Online_Permissions_Online_Groups">
+            <End Role="Online_Groups" EntitySet="Online_Groups" />
+            <End Role="Online_Permissions" EntitySet="Online_Permissions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Online_Permissions_Online_Menu" Association="Self.FK_Online_Permissions_Online_Menu">
+            <End Role="Online_Menu" EntitySet="Online_Menu" />
+            <End Role="Online_Permissions" EntitySet="Online_Permissions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Online_User_Online_Groups" Association="Self.FK_Online_User_Online_Groups">
+            <End Role="Online_Groups" EntitySet="Online_Groups" />
+            <End Role="Online_User" EntitySet="Online_User" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Cloud_RealEstateModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="Cloud_RealEstateEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Online_Groups" EntityType="Cloud_RealEstateModel.Online_Groups" />
+          <EntitySet Name="Online_Menu" EntityType="Cloud_RealEstateModel.Online_Menu" />
+          <EntitySet Name="Online_User" EntityType="Cloud_RealEstateModel.Online_User" />
+          <AssociationSet Name="FK_Online_User_Online_Groups" Association="Cloud_RealEstateModel.FK_Online_User_Online_Groups">
+            <End Role="Online_Groups" EntitySet="Online_Groups" />
+            <End Role="Online_User" EntitySet="Online_User" />
+          </AssociationSet>
+          <AssociationSet Name="Online_Permissions" Association="Cloud_RealEstateModel.Online_Permissions">
+            <End Role="Online_Groups" EntitySet="Online_Groups" />
+            <End Role="Online_Menu" EntitySet="Online_Menu" />
+          </AssociationSet>
+          <FunctionImport Name="fn_CityMain_select" IsComposable="true" ReturnType="Collection(Cloud_RealEstateModel.fn_CityMain_select_Result)">
+            <Parameter Name="Region_Id" Mode="In" Type="Int32" />
+            <Parameter Name="Company_Id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="fn_CountryMain_Select" IsComposable="true" ReturnType="Collection(Cloud_RealEstateModel.fn_CountryMain_Select_Result)" />
+          <FunctionImport Name="fn_Region_select" IsComposable="true" ReturnType="Collection(Cloud_RealEstateModel.fn_Region_select_Result)">
+            <Parameter Name="Country_Code" Mode="In" Type="String" />
+            <Parameter Name="Company_Id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="fn_tbl_Project_Type" IsComposable="true" ReturnType="Collection(Cloud_RealEstateModel.fn_tbl_Project_Type_Result)" />
+          <FunctionImport Name="fn_tbl_Project_Type_Option_Select" IsComposable="true" ReturnType="Collection(Cloud_RealEstateModel.fn_tbl_Project_Type_Option_Select_Result)">
+            <Parameter Name="Company_Id" Mode="In" Type="Int32" />
+            <Parameter Name="Project_TypeId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_tbl_Owner_CompanyProject_InsertUpdateDelete">
+            <Parameter Name="OCompany_IdPj" Mode="In" Type="Int32" />
+            <Parameter Name="Company_Id" Mode="In" Type="Int32" />
+            <Parameter Name="OCompanyCode" Mode="In" Type="String" />
+            <Parameter Name="OCompanyName" Mode="In" Type="String" />
+            <Parameter Name="OCompanyWeb" Mode="In" Type="String" />
+            <Parameter Name="OCompanyEmail" Mode="In" Type="String" />
+            <Parameter Name="OCompanyTel" Mode="In" Type="String" />
+            <Parameter Name="OCompanyMobile" Mode="In" Type="String" />
+            <Parameter Name="OCompanyAddress" Mode="In" Type="String" />
+            <Parameter Name="GLAccountNo" Mode="In" Type="String" />
+            <Parameter Name="Active" Mode="In" Type="Boolean" />
+            <Parameter Name="User_Id" Mode="In" Type="Int32" />
+            <Parameter Name="Computer_name" Mode="In" Type="String" />
+            <Parameter Name="OCompany_IdPj_out" Mode="InOut" Type="Int32" />
+            <Parameter Name="Vald" Mode="InOut" Type="Int32" />
+            <Parameter Name="Error" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(Cloud_RealEstateModel.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(Cloud_RealEstateModel.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_tbl_Project_Main_InsertUpdateDelete">
+            <Parameter Name="Project_Id" Mode="In" Type="Int32" />
+            <Parameter Name="Company_Id" Mode="In" Type="Int32" />
+            <Parameter Name="Project_Code" Mode="In" Type="String" />
+            <Parameter Name="Project_Name" Mode="In" Type="String" />
+            <Parameter Name="Address" Mode="In" Type="String" />
+            <Parameter Name="Country_Id" Mode="In" Type="String" />
+            <Parameter Name="City_id" Mode="In" Type="Int32" />
+            <Parameter Name="Region_Id" Mode="In" Type="Int32" />
+            <Parameter Name="Zone_Id" Mode="In" Type="Int32" />
+            <Parameter Name="OCompany_IdPj" Mode="In" Type="Int32" />
+            <Parameter Name="Project_TypeId" Mode="In" Type="Int32" />
+            <Parameter Name="Description" Mode="In" Type="String" />
+            <Parameter Name="location_lat_long" Mode="In" Type="String" />
+            <Parameter Name="lat" Mode="In" Type="String" />
+            <Parameter Name="long" Mode="In" Type="String" />
+            <Parameter Name="Active" Mode="In" Type="Boolean" />
+            <Parameter Name="User_Id" Mode="In" Type="Int32" />
+            <Parameter Name="Computer_name" Mode="In" Type="String" />
+            <Parameter Name="Project_IdOut" Mode="InOut" Type="Int32" />
+            <Parameter Name="Vald" Mode="InOut" Type="Int32" />
+            <Parameter Name="Error" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_tbl_Project_Sub_InsertUpdateDelete">
+            <Parameter Name="Project_IdSub" Mode="In" Type="Decimal" />
+            <Parameter Name="Project_Id" Mode="In" Type="Int32" />
+            <Parameter Name="Company_Id" Mode="In" Type="Int32" />
+            <Parameter Name="Project_Type_OptionId" Mode="In" Type="Int32" />
+            <Parameter Name="TotalUnitUsed" Mode="In" Type="Int32" />
+            <Parameter Name="ApplyManage" Mode="In" Type="Boolean" />
+            <Parameter Name="Computer_name" Mode="In" Type="String" />
+            <Parameter Name="Notes" Mode="In" Type="String" />
+            <Parameter Name="User_Id" Mode="In" Type="Int32" />
+            <Parameter Name="Active" Mode="In" Type="Boolean" />
+            <Parameter Name="Project_IdSub_Out" Mode="InOut" Type="Decimal" />
+            <Parameter Name="Vald" Mode="InOut" Type="Int32" />
+            <Parameter Name="Error" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_tbl_ProjectBuilding_InsertUpdateDelete">
+            <Parameter Name="Pj_BuildingId" Mode="In" Type="Int32" />
+            <Parameter Name="Company_Id" Mode="In" Type="Int32" />
+            <Parameter Name="Project_Id" Mode="In" Type="Int32" />
+            <Parameter Name="tbl_buildCatId" Mode="In" Type="Int32" />
+            <Parameter Name="TypeBuildingId" Mode="In" Type="Int32" />
+            <Parameter Name="Project_IdSub" Mode="In" Type="Decimal" />
+            <Parameter Name="BuildingCode" Mode="In" Type="String" />
+            <Parameter Name="BuildingName" Mode="In" Type="String" />
+            <Parameter Name="FloorNo" Mode="In" Type="Int32" />
+            <Parameter Name="Active" Mode="In" Type="Boolean" />
+            <Parameter Name="User_Id" Mode="In" Type="Int32" />
+            <Parameter Name="Computer_name" Mode="In" Type="String" />
+            <Parameter Name="Pj_BuildingId_out" Mode="InOut" Type="Int32" />
+            <Parameter Name="Vald" Mode="InOut" Type="Int32" />
+            <Parameter Name="Error" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
+          <FunctionImport Name="spo_tbl_Project_Type_Option_InsertUpdateDelete">
+            <Parameter Name="Project_Type_OptionId" Mode="In" Type="Int32" />
+            <Parameter Name="Project_TypeId" Mode="In" Type="Int32" />
+            <Parameter Name="Company_Id" Mode="In" Type="Int32" />
+            <Parameter Name="ProjectOption_Code" Mode="In" Type="String" />
+            <Parameter Name="ProjectOption_Name" Mode="In" Type="String" />
+            <Parameter Name="ProjectOption_Description" Mode="In" Type="String" />
+            <Parameter Name="Active" Mode="In" Type="Boolean" />
+            <Parameter Name="User_Id" Mode="In" Type="Int32" />
+            <Parameter Name="Computer_name" Mode="In" Type="String" />
+            <Parameter Name="Project_Type_OptionId_out" Mode="InOut" Type="Int32" />
+            <Parameter Name="Vald" Mode="InOut" Type="Int32" />
+            <Parameter Name="Error" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="fn_tbl_Owner_CompanyProject_Select" IsComposable="true" ReturnType="Collection(Cloud_RealEstateModel.fn_tbl_Owner_CompanyProject_Select_Result)">
+            <Parameter Name="Company_Id" Mode="In" Type="Int32" />
+            <Parameter Name="Active" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="fn_tbl_Project_Gallery_Select" IsComposable="true" ReturnType="Collection(Cloud_RealEstateModel.fn_tbl_Project_Gallery_Select_Result)">
+            <Parameter Name="Project_Id" Mode="In" Type="Int32" />
+            <Parameter Name="Company_Id" Mode="In" Type="Int32" />
+            <Parameter Name="Relation_Id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_tbl_Project_Gallery_InsertUpdate">
+            <Parameter Name="Pj_Gallery_Id" Mode="In" Type="Int32" />
+            <Parameter Name="Project_Id" Mode="In" Type="Int32" />
+            <Parameter Name="Company_Id" Mode="In" Type="Int32" />
+            <Parameter Name="Pj_img_Code" Mode="In" Type="String" />
+            <Parameter Name="Pj_img_path" Mode="In" Type="String" />
+            <Parameter Name="Relation_Id" Mode="In" Type="Int32" />
+            <Parameter Name="alt_Image" Mode="In" Type="String" />
+            <Parameter Name="Description_Image" Mode="In" Type="String" />
+            <Parameter Name="User_Id" Mode="In" Type="Int32" />
+            <Parameter Name="Computer_name" Mode="In" Type="String" />
+            <Parameter Name="Pj_Gallery_Id_out" Mode="InOut" Type="Int32" />
+            <Parameter Name="Active" Mode="In" Type="Int32" />
+            <Parameter Name="Vald" Mode="InOut" Type="Int32" />
+            <Parameter Name="Error" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="fn_tbl_Project_Main_Select" IsComposable="true" ReturnType="Collection(Cloud_RealEstateModel.fn_tbl_Project_Main_Select_Result)">
+          <Parameter Name="Company_Id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="fn_tbl_Project_Sub_Select" IsComposable="true" ReturnType="Collection(Cloud_RealEstateModel.fn_tbl_Project_Sub_Select_Result)">
+            <Parameter Name="Company_Id" Mode="In" Type="Int32" />
+            <Parameter Name="Project_Id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="fn_tbl_ProjectBuilding_Select" IsComposable="true" ReturnType="Collection(Cloud_RealEstateModel.fn_tbl_ProjectBuilding_Select_Result)">
+            <Parameter Name="Company_Id" Mode="In" Type="Int32" />
+            <Parameter Name="Project_Id" Mode="In" Type="Int32" />
+            <Parameter Name="Active" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="fn_tbl_TypeBuilding_Select" IsComposable="true" ReturnType="Collection(Cloud_RealEstateModel.fn_tbl_TypeBuilding_Select_Result)">
+            <Parameter Name="tbl_buildCatId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="fn_tbl_TypeBuildingCategorySelect" IsComposable="true" ReturnType="Collection(Cloud_RealEstateModel.fn_tbl_TypeBuildingCategorySelect_Result)" />
+        </EntityContainer>
+        <EntityType Name="Online_Groups">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Online_User" Relationship="Cloud_RealEstateModel.FK_Online_User_Online_Groups" FromRole="Online_Groups" ToRole="Online_User" />
+          <NavigationProperty Name="Online_Menu" Relationship="Cloud_RealEstateModel.Online_Permissions" FromRole="Online_Groups" ToRole="Online_Menu" />
+        </EntityType>
+        <EntityType Name="Online_Menu">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="text" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="iconCls" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="parent_id" Type="Int32" />
+          <Property Name="className" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Online_Groups" Relationship="Cloud_RealEstateModel.Online_Permissions" FromRole="Online_Menu" ToRole="Online_Groups" />
+        </EntityType>
+        <EntityType Name="Online_User">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="Group_id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="userName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="password" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="picture" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Group_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Online_Groups" Relationship="Cloud_RealEstateModel.FK_Online_User_Online_Groups" FromRole="Online_User" ToRole="Online_Groups" />
+        </EntityType>
+        <Association Name="FK_Online_User_Online_Groups">
+          <End Type="Cloud_RealEstateModel.Online_Groups" Role="Online_Groups" Multiplicity="1" />
+          <End Type="Cloud_RealEstateModel.Online_User" Role="Online_User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Online_Groups">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Online_User">
+              <PropertyRef Name="Group_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Online_Permissions">
+          <End Type="Cloud_RealEstateModel.Online_Groups" Role="Online_Groups" Multiplicity="*" />
+          <End Type="Cloud_RealEstateModel.Online_Menu" Role="Online_Menu" Multiplicity="*" />
+        </Association>
+        <ComplexType Name="fn_CityMain_select_Result">
+          <Property Type="Int32" Name="City_Id" Nullable="false" />
+          <Property Type="Int32" Name="Company_Id" Nullable="false" />
+          <Property Type="String" Name="CityName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="CityCode" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="CityName_Name_Online" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Latitude" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="Region_Id" Nullable="false" />
+          <Property Type="String" Name="Longitude" Nullable="false" MaxLength="50" />
+          <Property Type="Boolean" Name="Active" Nullable="true" />
+          <Property Type="Int32" Name="User_Id" Nullable="true" />
+          <Property Type="DateTime" Name="DateEntry" Nullable="true" Precision="23" />
+          <Property Type="String" Name="Computer_Name" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="fn_CountryMain_Select_Result">
+          <Property Type="String" Name="CountryCode" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="CountryName" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="latitude" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="longitude" Nullable="true" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="fn_Region_select_Result">
+          <Property Type="Int32" Name="Region_Id" Nullable="false" />
+          <Property Type="Int32" Name="Company_Id" Nullable="false" />
+          <Property Type="String" Name="Country_Code" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="Region_Code" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Region_Name" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="comments" Nullable="false" MaxLength="250" />
+          <Property Type="String" Name="Longitude" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Latitude" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Region_Properties" Nullable="false" MaxLength="100" />
+          <Property Type="Boolean" Name="Active" Nullable="false" />
+          <Property Type="Int32" Name="User_Id" Nullable="true" />
+          <Property Type="DateTime" Name="Last_Modified" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="Date_Entry" Nullable="true" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="fn_tbl_Project_Type_Result">
+          <Property Type="Int32" Name="Project_TypeId" Nullable="false" />
+          <Property Type="String" Name="Project_TypeCode" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="Project_TypeName" Nullable="true" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="fn_tbl_Project_Type_Option_Select_Result">
+          <Property Type="Int32" Name="Project_Type_OptionId" Nullable="false" />
+          <Property Type="Int32" Name="Project_TypeId" Nullable="false" />
+          <Property Type="Int32" Name="Company_Id" Nullable="false" />
+          <Property Type="String" Name="Project_TypeCode" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="Project_TypeName" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="ProjectOption_Code" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ProjectOption_Name" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="ProjectOption_Description" Nullable="true" />
+          <Property Type="Boolean" Name="Active" Nullable="true" />
+          <Property Type="Int32" Name="User_Id" Nullable="false" />
+          <Property Type="DateTime" Name="Entry_Date" Nullable="true" Precision="23" />
+          <Property Type="String" Name="Computer_name" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="fn_tbl_Owner_CompanyProject_Select_Result">
+          <Property Type="Int32" Name="OCompany_IdPj" Nullable="false" />
+          <Property Type="Int32" Name="Company_Id" Nullable="false" />
+          <Property Type="String" Name="OCompanyCode" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="OCompanyName" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="OCompanyWeb" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="OCompanyEmail" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="OCompanyTel" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="OCompanyMobile" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="OCompanyAddress" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="GLAccountNo" Nullable="true" MaxLength="30" />
+          <Property Type="Boolean" Name="Active" Nullable="true" />
+          <Property Type="Int32" Name="User_Id" Nullable="false" />
+          <Property Type="DateTime" Name="Entry_Date" Nullable="true" Precision="23" />
+          <Property Type="String" Name="Computer_name" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="fn_tbl_Project_Gallery_Select_Result">
+          <Property Type="Int32" Name="Pj_Gallery_Id" Nullable="false" />
+          <Property Type="Int32" Name="Project_Id" Nullable="false" />
+          <Property Type="Int32" Name="Company_Id" Nullable="false" />
+          <Property Type="String" Name="Pj_img_Code" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Pj_img_path" Nullable="true" />
+          <Property Type="Int32" Name="Relation_Id" Nullable="false" />
+          <Property Type="String" Name="alt_Image" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Description_Image" Nullable="true" />
+          <Property Type="Int32" Name="User_Id" Nullable="false" />
+          <Property Type="DateTime" Name="Entry_Date" Nullable="true" Precision="23" />
+          <Property Type="String" Name="Computer_name" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="fn_tbl_Project_Main_Select_Result">
+          <Property Type="Int32" Name="Project_Id" Nullable="false" />
+          <Property Type="Int32" Name="Company_Id" Nullable="false" />
+          <Property Type="String" Name="Project_Code" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="Project_Name" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Address" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="CountryCode" Nullable="true" MaxLength="20" />
+          <Property Type="Int32" Name="City_id" Nullable="true" />
+          <Property Type="Int32" Name="Region_Id" Nullable="true" />
+          <Property Type="Int32" Name="Zone_Id" Nullable="true" />
+          <Property Type="Int32" Name="OCompany_IdPj" Nullable="false" />
+          <Property Type="Int32" Name="Project_TypeId" Nullable="false" />
+          <Property Type="String" Name="Description" Nullable="true" />
+          <Property Type="String" Name="location_lat_long" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="lat" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="long" Nullable="true" MaxLength="50" />
+          <Property Type="Boolean" Name="Active" Nullable="true" />
+          <Property Type="Int32" Name="User_Id" Nullable="false" />
+          <Property Type="DateTime" Name="Entry_Date" Nullable="true" Precision="23" />
+          <Property Type="String" Name="Computer_name" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="CityCode" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="CityName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Region_Code" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Region_Name" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Zone_Code" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Zone_Name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="OCompanyCode" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="OCompanyName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Project_TypeCode" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Project_TypeName" Nullable="false" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="fn_tbl_Project_Sub_Select_Result">
+          <Property Type="Decimal" Name="Project_IdSub" Nullable="false" Precision="30" Scale="0" />
+          <Property Type="Int32" Name="Project_Id" Nullable="false" />
+          <Property Type="Int32" Name="Company_Id" Nullable="false" />
+          <Property Type="Int32" Name="Project_Type_OptionId" Nullable="false" />
+          <Property Type="Int32" Name="TotalUnitUsed" Nullable="true" />
+          <Property Type="Boolean" Name="ApplyManage" Nullable="true" />
+          <Property Type="String" Name="Notes" Nullable="true" MaxLength="200" />
+          <Property Type="Int32" Name="User_Id" Nullable="false" />
+          <Property Type="DateTime" Name="Entry_Date" Nullable="true" Precision="23" />
+          <Property Type="String" Name="Computer_name" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ProjectOption_Code" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ProjectOption_Name" Nullable="true" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="fn_tbl_ProjectBuilding_Select_Result">
+          <Property Type="Int32" Name="Pj_BuildingId" Nullable="false" />
+          <Property Type="Int32" Name="Company_Id" Nullable="false" />
+          <Property Type="Int32" Name="Project_Id" Nullable="false" />
+          <Property Type="Int32" Name="tbl_buildCatId" Nullable="true" />
+          <Property Type="Int32" Name="TypeBuildingId" Nullable="false" />
+          <Property Type="Decimal" Name="Project_IdSub" Nullable="false" Precision="30" Scale="0" />
+          <Property Type="String" Name="BuildingCode" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="BuildingName" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="FloorNo" Nullable="true" />
+          <Property Type="Boolean" Name="Active" Nullable="true" />
+          <Property Type="Int32" Name="User_Id" Nullable="false" />
+          <Property Type="DateTime" Name="Entry_Date" Nullable="true" Precision="23" />
+          <Property Type="String" Name="Computer_name" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="BuildCatName" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="BuildingTypeName" Nullable="true" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="fn_tbl_TypeBuilding_Select_Result">
+          <Property Type="Int32" Name="TypeBuildingId" Nullable="false" />
+          <Property Type="Int32" Name="tbl_buildCatId" Nullable="true" />
+          <Property Type="String" Name="BuildingTypeName" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="BuildingTypeDescription" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="fn_tbl_TypeBuildingCategorySelect_Result">
+          <Property Type="Int32" Name="tbl_buildCatId" Nullable="false" />
+          <Property Type="String" Name="BuildCatName" Nullable="true" MaxLength="100" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Cloud_RealEstateModelStoreContainer" CdmEntityContainer="Cloud_RealEstateEntities">
+          <EntitySetMapping Name="Online_Groups">
+            <EntityTypeMapping TypeName="Cloud_RealEstateModel.Online_Groups">
+              <MappingFragment StoreEntitySet="Online_Groups">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Online_Menu">
+            <EntityTypeMapping TypeName="Cloud_RealEstateModel.Online_Menu">
+              <MappingFragment StoreEntitySet="Online_Menu">
+                <ScalarProperty Name="className" ColumnName="className" />
+                <ScalarProperty Name="parent_id" ColumnName="parent_id" />
+                <ScalarProperty Name="iconCls" ColumnName="iconCls" />
+                <ScalarProperty Name="text" ColumnName="text" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Online_User">
+            <EntityTypeMapping TypeName="Cloud_RealEstateModel.Online_User">
+              <MappingFragment StoreEntitySet="Online_User">
+                <ScalarProperty Name="Group_id" ColumnName="Group_id" />
+                <ScalarProperty Name="picture" ColumnName="picture" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="userName" ColumnName="userName" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="Online_Permissions" TypeName="Cloud_RealEstateModel.Online_Permissions" StoreEntitySet="Online_Permissions">
+            <EndProperty Name="Online_Menu">
+              <ScalarProperty Name="id" ColumnName="Menu_id" />
+            </EndProperty>
+            <EndProperty Name="Online_Groups">
+              <ScalarProperty Name="id" ColumnName="Group_id" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="fn_CityMain_select" FunctionName="Cloud_RealEstateModel.Store.fn_CityMain_select">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Cloud_RealEstateModel.fn_CityMain_select_Result">
+                <ScalarProperty Name="City_Id" ColumnName="City_Id" />
+                <ScalarProperty Name="Company_Id" ColumnName="Company_Id" />
+                <ScalarProperty Name="CityName" ColumnName="CityName" />
+                <ScalarProperty Name="CityCode" ColumnName="CityCode" />
+                <ScalarProperty Name="CityName_Name_Online" ColumnName="CityName_Name_Online" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="Region_Id" ColumnName="Region_Id" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
+                <ScalarProperty Name="DateEntry" ColumnName="DateEntry" />
+                <ScalarProperty Name="Computer_Name" ColumnName="Computer_Name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="fn_CountryMain_Select" FunctionName="Cloud_RealEstateModel.Store.fn_CountryMain_Select">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Cloud_RealEstateModel.fn_CountryMain_Select_Result">
+                <ScalarProperty Name="CountryCode" ColumnName="CountryCode" />
+                <ScalarProperty Name="CountryName" ColumnName="CountryName" />
+                <ScalarProperty Name="latitude" ColumnName="latitude" />
+                <ScalarProperty Name="longitude" ColumnName="longitude" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="fn_Region_select" FunctionName="Cloud_RealEstateModel.Store.fn_Region_select">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Cloud_RealEstateModel.fn_Region_select_Result">
+                <ScalarProperty Name="Region_Id" ColumnName="Region_Id" />
+                <ScalarProperty Name="Company_Id" ColumnName="Company_Id" />
+                <ScalarProperty Name="Country_Code" ColumnName="Country_Code" />
+                <ScalarProperty Name="Region_Code" ColumnName="Region_Code" />
+                <ScalarProperty Name="Region_Name" ColumnName="Region_Name" />
+                <ScalarProperty Name="comments" ColumnName="comments" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="Region_Properties" ColumnName="Region_Properties" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
+                <ScalarProperty Name="Last_Modified" ColumnName="Last_Modified" />
+                <ScalarProperty Name="Date_Entry" ColumnName="Date_Entry" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="fn_tbl_Project_Type" FunctionName="Cloud_RealEstateModel.Store.fn_tbl_Project_Type">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Cloud_RealEstateModel.fn_tbl_Project_Type_Result">
+                <ScalarProperty Name="Project_TypeId" ColumnName="Project_TypeId" />
+                <ScalarProperty Name="Project_TypeCode" ColumnName="Project_TypeCode" />
+                <ScalarProperty Name="Project_TypeName" ColumnName="Project_TypeName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="fn_tbl_Project_Type_Option_Select" FunctionName="Cloud_RealEstateModel.Store.fn_tbl_Project_Type_Option_Select">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Cloud_RealEstateModel.fn_tbl_Project_Type_Option_Select_Result">
+                <ScalarProperty Name="Project_Type_OptionId" ColumnName="Project_Type_OptionId" />
+                <ScalarProperty Name="Project_TypeId" ColumnName="Project_TypeId" />
+                <ScalarProperty Name="Company_Id" ColumnName="Company_Id" />
+                <ScalarProperty Name="Project_TypeCode" ColumnName="Project_TypeCode" />
+                <ScalarProperty Name="Project_TypeName" ColumnName="Project_TypeName" />
+                <ScalarProperty Name="ProjectOption_Code" ColumnName="ProjectOption_Code" />
+                <ScalarProperty Name="ProjectOption_Name" ColumnName="ProjectOption_Name" />
+                <ScalarProperty Name="ProjectOption_Description" ColumnName="ProjectOption_Description" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
+                <ScalarProperty Name="Entry_Date" ColumnName="Entry_Date" />
+                <ScalarProperty Name="Computer_name" ColumnName="Computer_name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_tbl_Owner_CompanyProject_InsertUpdateDelete" FunctionName="Cloud_RealEstateModel.Store.sp_tbl_Owner_CompanyProject_InsertUpdateDelete" />
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="Cloud_RealEstateModel.Store.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="Cloud_RealEstateModel.Store.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="Cloud_RealEstateModel.Store.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="Cloud_RealEstateModel.Store.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Cloud_RealEstateModel.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="Cloud_RealEstateModel.Store.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Cloud_RealEstateModel.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="Cloud_RealEstateModel.Store.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_tbl_Project_Main_InsertUpdateDelete" FunctionName="Cloud_RealEstateModel.Store.sp_tbl_Project_Main_InsertUpdateDelete" />
+          <FunctionImportMapping FunctionImportName="sp_tbl_Project_Sub_InsertUpdateDelete" FunctionName="Cloud_RealEstateModel.Store.sp_tbl_Project_Sub_InsertUpdateDelete" />
+          <FunctionImportMapping FunctionImportName="sp_tbl_ProjectBuilding_InsertUpdateDelete" FunctionName="Cloud_RealEstateModel.Store.sp_tbl_ProjectBuilding_InsertUpdateDelete" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="Cloud_RealEstateModel.Store.sp_upgraddiagrams" />
+          <FunctionImportMapping FunctionImportName="spo_tbl_Project_Type_Option_InsertUpdateDelete" FunctionName="Cloud_RealEstateModel.Store.spo_tbl_Project_Type_Option_InsertUpdateDelete" />
+          <FunctionImportMapping FunctionImportName="fn_tbl_Owner_CompanyProject_Select" FunctionName="Cloud_RealEstateModel.Store.fn_tbl_Owner_CompanyProject_Select">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Cloud_RealEstateModel.fn_tbl_Owner_CompanyProject_Select_Result">
+                <ScalarProperty Name="OCompany_IdPj" ColumnName="OCompany_IdPj" />
+                <ScalarProperty Name="Company_Id" ColumnName="Company_Id" />
+                <ScalarProperty Name="OCompanyCode" ColumnName="OCompanyCode" />
+                <ScalarProperty Name="OCompanyName" ColumnName="OCompanyName" />
+                <ScalarProperty Name="OCompanyWeb" ColumnName="OCompanyWeb" />
+                <ScalarProperty Name="OCompanyEmail" ColumnName="OCompanyEmail" />
+                <ScalarProperty Name="OCompanyTel" ColumnName="OCompanyTel" />
+                <ScalarProperty Name="OCompanyMobile" ColumnName="OCompanyMobile" />
+                <ScalarProperty Name="OCompanyAddress" ColumnName="OCompanyAddress" />
+                <ScalarProperty Name="GLAccountNo" ColumnName="GLAccountNo" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
+                <ScalarProperty Name="Entry_Date" ColumnName="Entry_Date" />
+                <ScalarProperty Name="Computer_name" ColumnName="Computer_name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="fn_tbl_Project_Gallery_Select" FunctionName="Cloud_RealEstateModel.Store.fn_tbl_Project_Gallery_Select">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Cloud_RealEstateModel.fn_tbl_Project_Gallery_Select_Result">
+                <ScalarProperty Name="Pj_Gallery_Id" ColumnName="Pj_Gallery_Id" />
+                <ScalarProperty Name="Project_Id" ColumnName="Project_Id" />
+                <ScalarProperty Name="Company_Id" ColumnName="Company_Id" />
+                <ScalarProperty Name="Pj_img_Code" ColumnName="Pj_img_Code" />
+                <ScalarProperty Name="Pj_img_path" ColumnName="Pj_img_path" />
+                <ScalarProperty Name="Relation_Id" ColumnName="Relation_Id" />
+                <ScalarProperty Name="alt_Image" ColumnName="alt_Image" />
+                <ScalarProperty Name="Description_Image" ColumnName="Description_Image" />
+                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
+                <ScalarProperty Name="Entry_Date" ColumnName="Entry_Date" />
+                <ScalarProperty Name="Computer_name" ColumnName="Computer_name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_tbl_Project_Gallery_InsertUpdate" FunctionName="Cloud_RealEstateModel.Store.sp_tbl_Project_Gallery_InsertUpdate" />
+          <FunctionImportMapping FunctionImportName="fn_tbl_Project_Main_Select" FunctionName="Cloud_RealEstateModel.Store.fn_tbl_Project_Main_Select">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Cloud_RealEstateModel.fn_tbl_Project_Main_Select_Result">
+                <ScalarProperty Name="Project_Id" ColumnName="Project_Id" />
+                <ScalarProperty Name="Company_Id" ColumnName="Company_Id" />
+                <ScalarProperty Name="Project_Code" ColumnName="Project_Code" />
+                <ScalarProperty Name="Project_Name" ColumnName="Project_Name" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="CountryCode" ColumnName="CountryCode" />
+                <ScalarProperty Name="City_id" ColumnName="City_id" />
+                <ScalarProperty Name="Region_Id" ColumnName="Region_Id" />
+                <ScalarProperty Name="Zone_Id" ColumnName="Zone_Id" />
+                <ScalarProperty Name="OCompany_IdPj" ColumnName="OCompany_IdPj" />
+                <ScalarProperty Name="Project_TypeId" ColumnName="Project_TypeId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="location_lat_long" ColumnName="location_lat_long" />
+                <ScalarProperty Name="lat" ColumnName="lat" />
+                <ScalarProperty Name="long" ColumnName="long" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
+                <ScalarProperty Name="Entry_Date" ColumnName="Entry_Date" />
+                <ScalarProperty Name="Computer_name" ColumnName="Computer_name" />
+                <ScalarProperty Name="CityCode" ColumnName="CityCode" />
+                <ScalarProperty Name="CityName" ColumnName="CityName" />
+                <ScalarProperty Name="Region_Code" ColumnName="Region_Code" />
+                <ScalarProperty Name="Region_Name" ColumnName="Region_Name" />
+                <ScalarProperty Name="Zone_Code" ColumnName="Zone_Code" />
+                <ScalarProperty Name="Zone_Name" ColumnName="Zone_Name" />
+                <ScalarProperty Name="OCompanyCode" ColumnName="OCompanyCode" />
+                <ScalarProperty Name="OCompanyName" ColumnName="OCompanyName" />
+                <ScalarProperty Name="Project_TypeCode" ColumnName="Project_TypeCode" />
+                <ScalarProperty Name="Project_TypeName" ColumnName="Project_TypeName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="fn_tbl_Project_Sub_Select" FunctionName="Cloud_RealEstateModel.Store.fn_tbl_Project_Sub_Select">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Cloud_RealEstateModel.fn_tbl_Project_Sub_Select_Result">
+                <ScalarProperty Name="Project_IdSub" ColumnName="Project_IdSub" />
+                <ScalarProperty Name="Project_Id" ColumnName="Project_Id" />
+                <ScalarProperty Name="Company_Id" ColumnName="Company_Id" />
+                <ScalarProperty Name="Project_Type_OptionId" ColumnName="Project_Type_OptionId" />
+                <ScalarProperty Name="TotalUnitUsed" ColumnName="TotalUnitUsed" />
+                <ScalarProperty Name="ApplyManage" ColumnName="ApplyManage" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
+                <ScalarProperty Name="Entry_Date" ColumnName="Entry_Date" />
+                <ScalarProperty Name="Computer_name" ColumnName="Computer_name" />
+                <ScalarProperty Name="ProjectOption_Code" ColumnName="ProjectOption_Code" />
+                <ScalarProperty Name="ProjectOption_Name" ColumnName="ProjectOption_Name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="fn_tbl_ProjectBuilding_Select" FunctionName="Cloud_RealEstateModel.Store.fn_tbl_ProjectBuilding_Select">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Cloud_RealEstateModel.fn_tbl_ProjectBuilding_Select_Result">
+                <ScalarProperty Name="Pj_BuildingId" ColumnName="Pj_BuildingId" />
+                <ScalarProperty Name="Company_Id" ColumnName="Company_Id" />
+                <ScalarProperty Name="Project_Id" ColumnName="Project_Id" />
+                <ScalarProperty Name="tbl_buildCatId" ColumnName="tbl_buildCatId" />
+                <ScalarProperty Name="TypeBuildingId" ColumnName="TypeBuildingId" />
+                <ScalarProperty Name="Project_IdSub" ColumnName="Project_IdSub" />
+                <ScalarProperty Name="BuildingCode" ColumnName="BuildingCode" />
+                <ScalarProperty Name="BuildingName" ColumnName="BuildingName" />
+                <ScalarProperty Name="FloorNo" ColumnName="FloorNo" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
+                <ScalarProperty Name="Entry_Date" ColumnName="Entry_Date" />
+                <ScalarProperty Name="Computer_name" ColumnName="Computer_name" />
+                <ScalarProperty Name="BuildCatName" ColumnName="BuildCatName" />
+                <ScalarProperty Name="BuildingTypeName" ColumnName="BuildingTypeName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="fn_tbl_TypeBuilding_Select" FunctionName="Cloud_RealEstateModel.Store.fn_tbl_TypeBuilding_Select">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Cloud_RealEstateModel.fn_tbl_TypeBuilding_Select_Result">
+                <ScalarProperty Name="TypeBuildingId" ColumnName="TypeBuildingId" />
+                <ScalarProperty Name="tbl_buildCatId" ColumnName="tbl_buildCatId" />
+                <ScalarProperty Name="BuildingTypeName" ColumnName="BuildingTypeName" />
+                <ScalarProperty Name="BuildingTypeDescription" ColumnName="BuildingTypeDescription" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="fn_tbl_TypeBuildingCategorySelect" FunctionName="Cloud_RealEstateModel.Store.fn_tbl_TypeBuildingCategorySelect">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Cloud_RealEstateModel.fn_tbl_TypeBuildingCategorySelect_Result">
+                <ScalarProperty Name="tbl_buildCatId" ColumnName="tbl_buildCatId" />
+                <ScalarProperty Name="BuildCatName" ColumnName="BuildCatName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
